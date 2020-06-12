@@ -3,6 +3,7 @@ package com.madmantoo.myhero
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.madmantoo.myhero.model.HeroesData
 class MainActivity : AppCompatActivity() {
     private lateinit var rvHeroes: RecyclerView
     private var list: ArrayList<Hero> = arrayListOf()
+    private var title: String = "Mode List"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         list.addAll(HeroesData.listData)
         showRecyclerList()
+        setActionBarTitle(title)
     }
 
     private fun showRecyclerList() {
@@ -35,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showRecyclerGrid() {
-        rvHeroes.layoutManager = GridLayoutManager(this,2)
+        rvHeroes.layoutManager = GridLayoutManager(this, 2)
         val gridHeroAdapter = GridHeroAdapter(list)
         rvHeroes.adapter = gridHeroAdapter
     }
@@ -56,19 +59,29 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setActionBarTitle(title: String) {
+        if (supportActionBar != null) {
+            (supportActionBar as ActionBar).title = title
+        }
+    }
+
     private fun setMode(selectedMode: Int) {
         when (selectedMode) {
             R.id.action_list -> {
+                title = "Mode List"
                 showRecyclerList()
             }
 
             R.id.action_grid -> {
+                title = "Mode Grid"
                 showRecyclerGrid()
             }
 
             R.id.action_cardview -> {
+                title = "Mode Cardview"
                 showCardView()
             }
         }
+        setActionBarTitle(title)
     }
 }
